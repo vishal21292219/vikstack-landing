@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VikStack — Master System Design with confidence</title>
+<meta name="description" content="Get 2 free System Design worked examples — the exact reasoning and architecture that gets you hired. Straight to your inbox." />
+<meta property="og:title" content="Master System Design with confidence — VikStack" />
+<meta property="og:description" content="2 free System Design worked examples, the way top engineers actually reason. Free to your inbox." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0B0713; --panel:#140E24; --text:#EEEBFF; --sub:#A29CC8; --muted:#6f688f;
+    --cy:#4CC9FF; --mint:#5EF0C6; --viol:#A78BFF; --amber:#FFC97A;
+    --line:rgba(255,255,255,.08);
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:Inter,system-ui,sans-serif;color:var(--text);background:var(--ink);
+    -webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.5;
+  }
+  .bg{position:fixed;inset:0;z-index:-2;background:
+    radial-gradient(120% 80% at 50% -10%, #191233 0%, #0D0920 44%, #07050F 100%);}
+  .bg::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(45% 35% at 22% 18%, rgba(139,123,255,.20), transparent 70%),
+    radial-gradient(40% 30% at 82% 12%, rgba(76,201,255,.16), transparent 70%);}
+  .bg::after{content:"";position:absolute;inset:0;opacity:.35;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:54px 54px;mask-image:radial-gradient(70% 55% at 50% 30%,#000,transparent 85%);}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* nav */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:26px 0}
+  .brand{font-weight:900;letter-spacing:-.5px;font-size:20px;display:flex;align-items:center;gap:9px}
+  .brand .dot{width:11px;height:11px;border-radius:3px;background:linear-gradient(135deg,var(--cy),var(--viol));box-shadow:0 0 14px var(--cy)}
+  .navcta{font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:1px;color:var(--sub);
+    border:1px solid var(--line);padding:9px 16px;border-radius:999px;text-decoration:none;transition:.2s}
+  .navcta:hover{color:var(--text);border-color:rgba(255,255,255,.22)}
+
+  /* hero */
+  .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;padding:40px 0 70px}
+  .chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:3px;
+    color:#04121b;background:linear-gradient(120deg,#7FE0FF,var(--cy));padding:8px 18px;border-radius:999px;
+    border:1.5px solid #E8FBFF;box-shadow:0 0 30px rgba(76,201,255,.45)}
+  h1{font-size:clamp(38px,5vw,62px);line-height:1.02;letter-spacing:-2px;font-weight:900;margin:22px 0 0}
+  h1 .g{background:linear-gradient(105deg,#EAE6FF 0%,var(--viol) 55%,var(--cy) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lede{color:var(--sub);font-size:19px;max-width:520px;margin:20px 0 0}
+  .lede b{color:var(--text);font-weight:700}
+  .from{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:14px;letter-spacing:.3px}
+  .from b{color:var(--cy)}
+
+  /* form card */
+  .card{margin-top:30px;background:linear-gradient(160deg,rgba(30,22,54,.78),rgba(15,10,28,.72));
+    border:1px solid var(--line);border-radius:22px;padding:26px 24px 22px;backdrop-filter:blur(10px);
+    box-shadow:0 24px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);max-width:560px}
+  .card .k{font-family:var(--mono);font-size:12px;font-weight:800;letter-spacing:2px;color:var(--mint)}
+  .card h3{font-size:22px;font-weight:800;margin:6px 0 2px;letter-spacing:-.4px}
+  .card p.small{color:var(--sub);font-size:14px;margin-bottom:14px}
+  .checks{list-style:none;display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px}
+  .checks li{display:flex;align-items:center;gap:8px;color:var(--sub);font-size:13.5px;font-family:var(--mono)}
+  .checks li b{color:var(--mint)}
+  .nospam{color:var(--muted);font-size:12px;margin-top:12px;font-family:var(--mono)}
+
+  /* right visual: worked-example card */
+  .viz{position:relative}
+  .exam{background:linear-gradient(160deg,#171126,#0d0a1c);border:1px solid var(--line);border-radius:20px;
+    padding:20px;box-shadow:0 30px 70px rgba(0,0,0,.55);transform:rotate(1.4deg)}
+  .exam .bar{display:flex;gap:6px;margin-bottom:16px}
+  .exam .bar i{width:10px;height:10px;border-radius:50%;background:#2a2440;display:block}
+  .exam .title{font-family:var(--mono);font-size:12px;color:var(--sub);letter-spacing:1px;margin-bottom:14px}
+  .flow{display:flex;align-items:center;justify-content:space-between;gap:8px}
+  .node{flex:1;text-align:center;font-family:var(--mono);font-size:11px;font-weight:800;color:var(--text);
+    padding:12px 6px;border-radius:12px;border:1.5px solid;line-height:1.3}
+  .node.c{border-color:var(--cy);background:rgba(76,201,255,.10)}
+  .node.v{border-color:var(--viol);background:rgba(167,139,255,.10)}
+  .node.m{border-color:var(--mint);background:rgba(94,240,198,.10)}
+  .arrow{color:var(--sub);font-size:15px;flex:0 0 auto}
+  .exam .row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--sub);margin-top:16px;padding-top:14px;border-top:1px dashed rgba(255,255,255,.1)}
+  .exam .row b{color:var(--mint)}
+  .badge-float{position:absolute;top:-20px;right:16px;z-index:2;background:linear-gradient(120deg,var(--viol),#7d63e6);color:#fff;
+    font-family:var(--mono);font-size:11.5px;font-weight:800;padding:8px 15px;border-radius:999px;box-shadow:0 10px 30px rgba(167,139,255,.5);transform:rotate(2deg);white-space:nowrap}
+
+  /* section: what's inside */
+  section.inside{padding:30px 0 80px;text-align:center}
+  .eyebrow{font-family:var(--mono);font-size:13px;font-weight:800;letter-spacing:4px;color:var(--cy)}
+  h2{font-size:clamp(28px,3.6vw,40px);font-weight:900;letter-spacing:-1px;margin:10px 0 8px}
+  .sub2{color:var(--sub);max-width:560px;margin:0 auto 40px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .tile{background:linear-gradient(160deg,rgba(30,22,54,.6),rgba(15,10,28,.55));border:1px solid var(--line);
+    border-radius:18px;padding:26px 22px;text-align:left;transition:.25s}
+  .tile:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.18)}
+  .tile .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:22px;margin-bottom:14px;
+    background:rgba(76,201,255,.12);border:1px solid rgba(76,201,255,.3)}
+  .tile h4{font-size:19px;font-weight:800;margin-bottom:6px}
+  .tile p{color:var(--sub);font-size:14.5px}
+
+  footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--muted);font-size:13px;font-family:var(--mono)}
+  footer .brand{justify-content:center;margin-bottom:10px;font-size:16px;color:var(--text)}
+
+  /* custom subscribe form */
+  .lp-form{display:flex;flex-direction:column;gap:0}
+  .lp-form input[type=email]{width:100%;background:rgba(10,7,20,.72);border:1.5px solid rgba(255,255,255,.16);
+    color:#fff;border-radius:13px;padding:15px 16px;font-size:16px;font-family:Inter,sans-serif;outline:none;transition:.18s}
+  .lp-form input[type=email]:focus{border-color:var(--cy);box-shadow:0 0 0 3px rgba(76,201,255,.18)}
+  .lp-form input::placeholder{color:#7a749b}
+  .lp-form button{margin-top:12px;background:linear-gradient(120deg,var(--cy),var(--viol));color:#04121b;
+    font-weight:800;font-size:16px;border-radius:13px;padding:15px;border:0;cursor:pointer;
+    box-shadow:0 10px 30px rgba(76,201,255,.35);transition:.18s}
+  .lp-form button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .lp-ok{color:var(--mint);font-weight:700;font-size:15px;padding:16px 4px 4px;font-family:var(--mono)}
+
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;gap:34px;padding:20px 0 50px}
+    .viz{order:-1;max-width:420px}
+    .grid3{grid-template-columns:1fr}
+    .exam{transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<div class="wrap">
+  <nav>
+    <div class="brand"><span class="dot"></span>vikstack</div>
+    <a class="navcta" href="#get">GET THE FREE PACK</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <span class="chip">SYSTEM DESIGN</span>
+      <h1>Master system design —<br><span class="g">the way it clicks.</span></h1>
+      <p class="lede">Two complete worked examples — the real trade-offs, the actual diagrams, and the reasoning that turns a shaky answer into <b>an offer</b>. Free, straight to your inbox.</p>
+      <p class="from">From <b>vikstack</b> — system design, explained in 60-second visuals.</p>
+
+      <div class="card" id="get">
+        <div class="k">▸ THE FREE PACK</div>
+        <h3>Where should we send it?</h3>
+        <p class="small">Drop your email — it lands in seconds, no strings.</p>
+        <!-- custom form → MailerLite endpoint (captures to "System Design Leads") -->
+        <form class="lp-form" action="https://assets.mailerlite.com/jsonp/2517428/forms/193505146931513144/subscribe" method="post" target="ml_iframe" onsubmit="return lpGo()">
+          <input type="email" name="fields[email]" placeholder="you@email.com" required autocomplete="email" />
+          <input type="hidden" name="ml-submit" value="1" />
+          <input type="hidden" name="anticsrf" value="true" />
+          <button type="submit">Send me the pack →</button>
+        </form>
+        <iframe name="ml_iframe" title="submit" style="display:none;width:0;height:0;border:0"></iframe>
+        <div class="lp-ok" id="lpok" style="display:none">✓ Done — check your inbox in a few seconds.</div>
+        <ul class="checks">
+          <li><b>✓</b> URL Shortener — end to end</li>
+          <li><b>✓</b> Caching — end to end</li>
+          <li><b>✓</b> Visual guide included</li>
+        </ul>
+        <div class="nospam">No spam, ever · one-click unsubscribe</div>
+      </div>
+    </div>
+
+    <div class="viz">
+      <div class="badge-float">the way it's really solved</div>
+      <div class="exam">
+        <div class="bar"><i></i><i></i><i></i></div>
+        <div class="title">worked example · url shortener</div>
+        <div class="flow">
+          <div class="node c">Unique&nbsp;ID</div>
+          <span class="arrow">→</span>
+          <div class="node m">Base62</div>
+          <span class="arrow">→</span>
+          <div class="node v">Key‑Value</div>
+          <span class="arrow">→</span>
+          <div class="node c">301</div>
+        </div>
+        <div class="row"><span>~100 chars in</span><b>7 chars out ✓</b></div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<div class="wrap">
+  <section class="inside">
+    <div class="eyebrow">INSIDE THE PACK</div>
+    <h2>Not notes. Worked solutions.</h2>
+    <p class="sub2">The gap between knowing the buzzwords and actually solving it live — closed.</p>
+    <div class="grid3">
+      <div class="tile">
+        <div class="ic">🧩</div>
+        <h4>Two full walkthroughs</h4>
+        <p>URL Shortener &amp; Caching — requirements, trade-offs, and the final architecture, reasoned one step at a time.</p>
+      </div>
+      <div class="tile">
+        <div class="ic">🎨</div>
+        <h4>The visual guide</h4>
+        <p>The same crisp 2D diagrams from our videos — so it clicks the first time, not the fifth.</p>
+      </div>
+      <div class="tile">
+        <div class="ic">⚡</div>
+        <h4>Zero fluff</h4>
+        <p>No 200-page dump, no course paywall. Open it, get it, use it in the room.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="brand" style="display:inline-flex"><span class="dot"></span>vikstack</div>
+  <div>System design &amp; everyday tech, visualized. © VikStack 2026</div>
+</footer>
+
+<script>
+/* submit to MailerLite via the hidden iframe, then show our own success state */
+function lpGo(){
+  var f=document.querySelector('.lp-form');
+  setTimeout(function(){ f.style.display='none'; document.getElementById('lpok').style.display='block'; }, 650);
+  return true;
+}
+</script>
+</body>
+</html>
